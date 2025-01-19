@@ -8,8 +8,10 @@ use Illuminate\Http\Request;
 use App\Models\RegistrationModel;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Foundation\Auth\RegistersUsers;
 class RegisterController extends Controller
 {
+    use RegistersUsers;
     public function register(Request $request)
     {
 
@@ -28,6 +30,7 @@ class RegisterController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
     ]);
+        $user->sendEmailVerificationNotification();
 
         $token = $user->createToken('RegistrationToken')->accessToken;
 
